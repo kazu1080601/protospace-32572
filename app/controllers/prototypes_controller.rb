@@ -10,9 +10,11 @@ class PrototypesController < ApplicationController
   end
 
   def create
-    if user_signed_in? && Prototype.create(prototype_params)
+    prototype = Prototype.new(prototype_params)
+    if user_signed_in? && prototype.save
       redirect_to root_path
     else
+      @prototype = prototype
       render :new
     end
   end
@@ -39,6 +41,7 @@ class PrototypesController < ApplicationController
     if (current_user.id == prototype.user.id) && prototype.update(prototype_params)
       redirect_to root_path
     else
+      @prototype = prototype
       render :edit
     end
   end
